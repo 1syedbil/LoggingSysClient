@@ -20,9 +20,17 @@ namespace NetworkingA3Client
     /// </summary>
     public partial class MainWindow : Window
     {
+        private Client client;
+
         public MainWindow()
         {
             InitializeComponent();
+            client = new Client();
+        }
+
+        private void startBtn_Click(object sender, RoutedEventArgs e)
+        {
+            client.RunClient();
         }
     }
 }
