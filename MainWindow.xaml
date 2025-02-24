@@ -7,7 +7,10 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Button x:Name="startBtn" Content="Start" HorizontalAlignment="Center" VerticalAlignment="Center" Height="67" Width="132" Click="startBtn_Click"/>
+        
+        <Button x:Name="startBtn" Content="Connect" HorizontalAlignment="Center" VerticalAlignment="Top" Height="27" Width="100" Click="startBtn_Click" Margin="0,237,0,0"/>
+        <TextBox x:Name="ipInput" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" Width="144" Height="30" TextAlignment="Center" FontSize="15"/>
+        <Label x:Name="ipInputLabel" Content="Enter an IP Address" HorizontalAlignment="Center" Margin="0,153,0,0" VerticalAlignment="Top" FontSize="20"/>
 
     </Grid>
 </Window>

@@ -2,20 +2,29 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Net.Sockets;
+using System.Configuration;
+using System.Data.SqlTypes;
 
 namespace NetworkingA3Client
 {
     internal class Client
     {
 
-        public void RunClient()
+        private int serverPort = int.Parse(ConfigurationManager.AppSettings["port"]);
+        private int retErr = int.Parse(ConfigurationManager.AppSettings["retErr"]);
+
+        public string[] messageTypes = { "CON", "INF", "DEB", "ERR", "FTL" };
+        public enum types { CON, INF, DEB, ERR, FTL };
+
+        public int RunClient(string ip, int type, string id, string name)
         {
-            ConnectToLogger("127.0.0.1", 13000);
+            return ConnectToLogger(ip, type, id, name, serverPort); 
         }
 
-        private void ConnectToLogger(string ip, int port)
+        private int ConnectToLogger(string ip, int type, string id, string name, int port)
         {
             try
             {
@@ -23,24 +32,53 @@ namespace NetworkingA3Client
 
                 NetworkStream stream = client.GetStream();
 
-                stream.Write(CreateMessage(), 0, 5);
+                byte[] message = CreateMessage(type, id, name);
+
+                stream.Write(message, 0, message.Length);
 
                 stream.Close();
                 client.Close();
             }
-            catch (ArgumentNullException e)
+            catch (ArgumentNullException)
             {
-                Console.WriteLine(e.Message);
+                return retErr;
             }
-            catch (SocketException e)
+            catch (SocketException)
             {
-                Console.WriteLine(e.Message);
+                return retErr;
             }
+
+            return 0;
         }
 
-        private byte[] CreateMessage()
+        private byte[] CreateMessage(int type, string id, string name) 
         {
-            string contents = "Hello";
+            string contents = string.Empty;
+            object messageObj;
+
+            switch(type)
+            {
+                case (int)types.CON:
+                    messageObj = new { ID = messageTypes[(int)types.INF], DeviceName = name, GUID = id };
+                    contents = JsonSerializer.Serialize(messageObj); 
+                    break;
+
+                case (int)types.INF:
+                    break;
+
+                case (int)types.DEB:
+                    break;
+
+                case (int)types.ERR:
+                    break;
+
+                case (int)types.FTL:
+                    break;
+
+                default:
+                    break;
+            }
+
             byte[] message = Encoding.ASCII.GetBytes(contents);
 
             return message;
