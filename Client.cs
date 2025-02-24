@@ -19,12 +19,12 @@ namespace NetworkingA3Client
         public string[] messageTypes = { "CON", "INF", "DEB", "ERR", "FTL" };
         public enum types { CON, INF, DEB, ERR, FTL };
 
-        public int RunClient(string ip, int type, string id, string name)
+        public int RunClient(string ip, int type, string id, string name, string mesContents)
         {
-            return ConnectToLogger(ip, type, id, name, serverPort); 
+            return ConnectToLogger(ip, type, id, name, mesContents, serverPort); 
         }
 
-        private int ConnectToLogger(string ip, int type, string id, string name, int port)
+        private int ConnectToLogger(string ip, int type, string id, string name, string mesContents, int port)
         {
             try
             {
@@ -32,9 +32,13 @@ namespace NetworkingA3Client
 
                 NetworkStream stream = client.GetStream();
 
-                byte[] message = CreateMessage(type, id, name);
+                byte[] message = CreateMessage(type, id, name, mesContents);
 
                 stream.Write(message, 0, message.Length);
+
+                message = CreateMessage((int)types.INF, id, name, "disconnected");
+
+                stream.Write(message, 0, message.Length); 
 
                 stream.Close();
                 client.Close();
@@ -51,7 +55,7 @@ namespace NetworkingA3Client
             return 0;
         }
 
-        private byte[] CreateMessage(int type, string id, string name) 
+        private byte[] CreateMessage(int type, string id, string name, string mesContents) 
         {
             string contents = string.Empty;
             object messageObj;
@@ -64,6 +68,8 @@ namespace NetworkingA3Client
                     break;
 
                 case (int)types.INF:
+                    messageObj = new { ID = messageTypes[type], DeviceName = name, GUID = id, Contents = mesContents };
+                    contents = JsonSerializer.Serialize(messageObj);
                     break;
 
                 case (int)types.DEB:

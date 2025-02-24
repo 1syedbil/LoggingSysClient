@@ -56,7 +56,7 @@ namespace NetworkingA3Client
         private void startBtn_Click(object sender, RoutedEventArgs e)
         {
             Ip = ipInput.Text;  
-            if (client.RunClient(Ip, (int)Client.types.CON, UniqueId, DeviceName) == retErr) 
+            if (client.RunClient(Ip, (int)Client.types.CON, UniqueId, DeviceName, "") == retErr) 
             {
                 MessageBoxResult result = MessageBox.Show("Could not connect to server. The client will close upon exit from this window.", "Connection Error");
                 if (result == MessageBoxResult.OK || result == MessageBoxResult.None)
