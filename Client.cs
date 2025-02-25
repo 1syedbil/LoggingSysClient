@@ -24,6 +24,17 @@ namespace NetworkingA3Client
             return ConnectToLogger(ip, type, id, name, mesContents, serverPort); 
         }
 
+        public int RunRateLimiterTest(string ip, int type, string id, string name, string mesContents) 
+        {
+            while (true)
+            {
+                if (ConnectToLogger(ip, type, id, name, mesContents, serverPort) == retErr)
+                {
+                    return retErr;
+                }
+            }
+        }
+
         private int ConnectToLogger(string ip, int type, string id, string name, string mesContents, int port)
         {
             try

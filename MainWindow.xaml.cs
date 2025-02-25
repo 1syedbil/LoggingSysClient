@@ -82,5 +82,37 @@ namespace NetworkingA3Client
                 rateLimiterBtn.Visibility = Visibility.Visible; 
             }
         }
+
+        private void debugBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void edgeCaseBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void errorBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void fatalBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void rateLimiterBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (client.RunRateLimiterTest(Ip, (int)Client.types.DEB, UniqueId, DeviceName, "Hello, this is a rate limiter test.") == retErr)
+            {
+                MessageBoxResult result = MessageBox.Show("Could not connect to server. The client will close upon exit from this window.", "Connection Error");
+                if (result == MessageBoxResult.OK || result == MessageBoxResult.None)
+                {
+                    Close();
+                }
+            }
+        }
     }
 }
