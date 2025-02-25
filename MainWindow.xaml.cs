@@ -216,17 +216,19 @@ namespace NetworkingA3Client
 
         private void backBtn_Click(object sender, RoutedEventArgs e)
         {
+            msgInput.Text = string.Empty;
+
+            msgInputLabel.Visibility = Visibility.Collapsed;
+            msgInput.Visibility = Visibility.Collapsed;
+            sendMsgBtn.Visibility = Visibility.Collapsed;
+            backBtn.Visibility = Visibility.Collapsed;
+
             testePageLabel.Visibility = Visibility.Visible;
             debugBtn.Visibility = Visibility.Visible;
             edgeCaseBtn.Visibility = Visibility.Visible;
             errorBtn.Visibility = Visibility.Visible;
             fatalBtn.Visibility = Visibility.Visible;
             rateLimiterBtn.Visibility = Visibility.Visible;
-
-            msgInputLabel.Visibility = Visibility.Collapsed;
-            msgInput.Visibility = Visibility.Collapsed;
-            sendMsgBtn.Visibility = Visibility.Collapsed;
-            backBtn.Visibility = Visibility.Collapsed;
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
