@@ -73,12 +73,18 @@ namespace NetworkingA3Client
                     break;
 
                 case (int)types.DEB:
+                    messageObj = new { ID = messageTypes[type], DeviceName = name, GUID = id, Contents = mesContents };
+                    contents = JsonSerializer.Serialize(messageObj);
                     break;
 
                 case (int)types.ERR:
+                    messageObj = new { ID = messageTypes[type], DeviceName = name, GUID = id, Contents = mesContents };
+                    contents = JsonSerializer.Serialize(messageObj);
                     break;
 
                 case (int)types.FTL:
+                    messageObj = new { ID = messageTypes[type], DeviceName = name, GUID = id, Contents = mesContents };
+                    contents = JsonSerializer.Serialize(messageObj);
                     break;
 
                 default:

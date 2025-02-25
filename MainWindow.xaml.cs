@@ -51,6 +51,10 @@ namespace NetworkingA3Client
             client = new Client();
             UniqueId = Guid.NewGuid().ToString();  
             DeviceName = Environment.MachineName;
+
+            startBtn.Visibility = Visibility.Visible;
+            ipInput.Visibility = Visibility.Visible;
+            ipInputLabel.Visibility = Visibility.Visible; 
         }
 
         private void startBtn_Click(object sender, RoutedEventArgs e)
@@ -63,6 +67,19 @@ namespace NetworkingA3Client
                 {
                     Close();
                 }
+            }
+            else
+            {
+                startBtn.Visibility = Visibility.Collapsed;
+                ipInput.Visibility = Visibility.Collapsed;
+                ipInputLabel.Visibility = Visibility.Collapsed;
+
+                testePageLabel.Visibility = Visibility.Visible;
+                debugBtn.Visibility = Visibility.Visible;
+                edgeCaseBtn.Visibility = Visibility.Visible;
+                errorBtn.Visibility = Visibility.Visible;
+                fatalBtn.Visibility = Visibility.Visible;
+                rateLimiterBtn.Visibility = Visibility.Visible; 
             }
         }
     }
