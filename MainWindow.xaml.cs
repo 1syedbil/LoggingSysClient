@@ -120,7 +120,28 @@ namespace NetworkingA3Client
 
         private void fatalBtn_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                throw new InvalidOperationException("A fatal error has occurred.");
+            }
+            //catch the error to send an ERR type message to the logger
+            catch (Exception error)
+            {
+                if (client.RunClient(Ip, (int)Client.types.FTL, UniqueId, DeviceName, error.Message) == retErr)
+                {
+                    MessageBoxResult result = MessageBox.Show("Could not connect to server. The client will close upon exit from this window.", "Connection Error");
+                    if (result == MessageBoxResult.OK || result == MessageBoxResult.None)
+                    {
+                        Close();
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Fatal error was logged. Client will crash after you leave this window.", "Fatal Error");
+                }
 
+                throw;
+            }
         }
 
         private void rateLimiterBtn_Click(object sender, RoutedEventArgs e)
