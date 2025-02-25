@@ -80,10 +80,6 @@ namespace NetworkingA3Client
 
                 stream.Write(message, 0, message.Length);
 
-                message = CreateMessage((int)types.INF, id, name, "disconnected");
-
-                stream.Write(message, 0, message.Length); 
-
                 stream.Close();
                 client.Close();
             }

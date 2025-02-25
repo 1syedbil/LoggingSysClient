@@ -176,6 +176,14 @@ namespace NetworkingA3Client
                     MessageBox.Show("Fatal error was logged. Client will crash after you leave this window.", "Fatal Error");
                 }
 
+                if (client.RunClient(Ip, (int)Client.types.INF, UniqueId, DeviceName, "disconnected") == retErr) 
+                {
+                    MessageBoxResult result = MessageBox.Show("Could not connect to server. The client will close upon exit from this window.", "Connection Error");
+                    if (result == MessageBoxResult.OK || result == MessageBoxResult.None)
+                    {
+                        Close();
+                    }
+                }
                 throw;
             }
         }
@@ -219,6 +227,17 @@ namespace NetworkingA3Client
             msgInput.Visibility = Visibility.Collapsed;
             sendMsgBtn.Visibility = Visibility.Collapsed;
             backBtn.Visibility = Visibility.Collapsed;
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (startBtn.Visibility != Visibility.Visible && ipInput.Visibility != Visibility.Visible && ipInputLabel.Visibility != Visibility.Visible)
+            {
+                if (client.RunClient(Ip, (int)Client.types.INF, UniqueId, DeviceName, "disconnected") == retErr)
+                {
+                    MessageBox.Show("Could not connect to server. The client will close upon exit from this window.", "Connection Error");
+                }
+            }
         }
     }
 }
