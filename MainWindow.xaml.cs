@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -49,7 +50,7 @@ namespace NetworkingA3Client
         {
             InitializeComponent();
             client = new Client();
-            UniqueId = Guid.NewGuid().ToString();  
+            UniqueId = Process.GetCurrentProcess().Id.ToString();  
             DeviceName = Environment.MachineName;
 
             startBtn.Visibility = Visibility.Visible;
@@ -90,7 +91,32 @@ namespace NetworkingA3Client
 
         private void edgeCaseBtn_Click(object sender, RoutedEventArgs e)
         {
+            //send the empty message
+            if (client.SendEmptyMsg(Ip) == retErr) 
+            {
+                MessageBoxResult result = MessageBox.Show("Could not connect to server. The client will close upon exit from this window.", "Connection Error");
+                if (result == MessageBoxResult.OK || result == MessageBoxResult.None)
+                {
+                    Close();
+                }
+            }
 
+            //send the big message
+            string message = string.Empty; 
+
+            for (int i = 0; i < int.Parse(ConfigurationManager.AppSettings["bigVal"]); i++)
+            {
+                message += "a";
+            }
+
+            if (client.RunClient(Ip, (int)Client.types.DEB, UniqueId, DeviceName, message) == retErr)  
+            {
+                MessageBoxResult result = MessageBox.Show("Could not connect to server. The client will close upon exit from this window.", "Connection Error");
+                if (result == MessageBoxResult.OK || result == MessageBoxResult.None)
+                {
+                    Close();
+                }
+            }
         }
 
         private void errorBtn_Click(object sender, RoutedEventArgs e)

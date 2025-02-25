@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using System.Net.Sockets;
 using System.Configuration;
 using System.Data.SqlTypes;
+using System.Xml.Linq;
+using System.Windows;
 
 namespace NetworkingA3Client
 {
@@ -18,6 +20,37 @@ namespace NetworkingA3Client
 
         public string[] messageTypes = { "CON", "INF", "DEB", "ERR", "FTL" };
         public enum types { CON, INF, DEB, ERR, FTL };
+
+        public int SendEmptyMsg(string ip)
+        {
+            try
+            {
+                TcpClient client = new TcpClient(ip, serverPort);
+
+                NetworkStream stream = client.GetStream();
+
+                object msgObj = new { ID = "", DeviceName = "", PID = "", Contents = "" };
+
+                string contents = JsonSerializer.Serialize(msgObj);
+
+                byte[] message = Encoding.ASCII.GetBytes(contents);
+
+                stream.Write(message, 0, message.Length);
+
+                stream.Close();
+                client.Close();
+            }
+            catch (ArgumentNullException)
+            {
+                return retErr;
+            }
+            catch (SocketException)
+            {
+                return retErr;
+            }
+
+            return 0;
+        }
 
         public int RunClient(string ip, int type, string id, string name, string mesContents)
         {
@@ -74,27 +107,27 @@ namespace NetworkingA3Client
             switch(type)
             {
                 case (int)types.CON:
-                    messageObj = new { ID = messageTypes[(int)types.INF], DeviceName = name, GUID = id };
+                    messageObj = new { ID = messageTypes[(int)types.INF], DeviceName = name, PID = id };
                     contents = JsonSerializer.Serialize(messageObj); 
                     break;
 
                 case (int)types.INF:
-                    messageObj = new { ID = messageTypes[type], DeviceName = name, GUID = id, Contents = mesContents };
+                    messageObj = new { ID = messageTypes[type], DeviceName = name, PID = id, Contents = mesContents };
                     contents = JsonSerializer.Serialize(messageObj);
                     break;
 
                 case (int)types.DEB:
-                    messageObj = new { ID = messageTypes[type], DeviceName = name, GUID = id, Contents = mesContents };
+                    messageObj = new { ID = messageTypes[type], DeviceName = name, PID = id, Contents = mesContents };
                     contents = JsonSerializer.Serialize(messageObj);
                     break;
 
                 case (int)types.ERR:
-                    messageObj = new { ID = messageTypes[type], DeviceName = name, GUID = id, Contents = mesContents };
+                    messageObj = new { ID = messageTypes[type], DeviceName = name, PID = id, Contents = mesContents };
                     contents = JsonSerializer.Serialize(messageObj);
                     break;
 
                 case (int)types.FTL:
-                    messageObj = new { ID = messageTypes[type], DeviceName = name, GUID = id, Contents = mesContents };
+                    messageObj = new { ID = messageTypes[type], DeviceName = name, PID = id, Contents = mesContents };
                     contents = JsonSerializer.Serialize(messageObj);
                     break;
 
