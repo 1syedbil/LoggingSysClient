@@ -95,7 +95,27 @@ namespace NetworkingA3Client
 
         private void errorBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            //cause an intentional error
+            try
+            {
+                int test = retErr / 0;
+            }
+            //catch the error to send an ERR type message to the logger
+            catch (Exception error)
+            {
+                if (client.RunClient(Ip, (int)Client.types.ERR, UniqueId, DeviceName, error.Message) == retErr) 
+                {
+                    MessageBoxResult result = MessageBox.Show("Could not connect to server. The client will close upon exit from this window.", "Connection Error");
+                    if (result == MessageBoxResult.OK || result == MessageBoxResult.None)
+                    {
+                        Close();
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Exception was caught and sent to server.", "Caught Exception");
+                }
+            }
         }
 
         private void fatalBtn_Click(object sender, RoutedEventArgs e)
