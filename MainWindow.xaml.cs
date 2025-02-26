@@ -1,4 +1,14 @@
-﻿using System;
+﻿/*
+ * FILE          : MainWindow.xaml.cs
+ * PROJECT       : Network Application Development Assignment 3
+ * PROGRAMMER    : Bilal Syed (8927633)
+ * FIRST VERSION : 2025-02-20
+ * DESCRIPTION   : This file contains the MainWindow class, which is the main UI for the client application.
+ *                 It handles user interactions, such as connecting to the server, sending messages, and testing edge cases.
+ *                 The class also manages the visibility of UI elements based on the application's state.
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
@@ -46,6 +56,12 @@ namespace NetworkingA3Client
             set { deviceName = value; }
         }
 
+        /*
+         * METHOD        : MainWindow()
+         * DESCRIPTION   : Initializes the MainWindow and sets up the initial UI state.
+         * PARAMETERS    : None
+         * RETURNS       : None
+         */
         public MainWindow()
         {
             InitializeComponent();
@@ -58,6 +74,13 @@ namespace NetworkingA3Client
             ipInputLabel.Visibility = Visibility.Visible; 
         }
 
+        /*
+         * METHOD        : startBtn_Click()
+         * DESCRIPTION   : Handles the click event for the start button. Attempts to connect to the server and updates the UI accordingly.
+         * PARAMETERS    : object sender - The object that raised the event.
+         *                 RoutedEventArgs e - Event arguments.
+         * RETURNS       : None
+         */
         private void startBtn_Click(object sender, RoutedEventArgs e)
         {
             Ip = ipInput.Text;  
@@ -84,6 +107,13 @@ namespace NetworkingA3Client
             }
         }
 
+        /*
+         * METHOD        : debugBtn_Click()
+         * DESCRIPTION   : Handles the click event for the debug button. Updates the UI to allow sending debug messages.
+         * PARAMETERS    : object sender - The object that raised the event.
+         *                 RoutedEventArgs e - Event arguments.
+         * RETURNS       : None
+         */
         private void debugBtn_Click(object sender, RoutedEventArgs e)
         {
             testePageLabel.Visibility = Visibility.Collapsed;
@@ -99,6 +129,13 @@ namespace NetworkingA3Client
             backBtn.Visibility = Visibility.Visible;
         }
 
+        /*
+         * METHOD        : edgeCaseBtn_Click()
+         * DESCRIPTION   : Handles the click event for the edge case button. Sends an empty message and a large message to the server.
+         * PARAMETERS    : object sender - The object that raised the event.
+         *                 RoutedEventArgs e - Event arguments.
+         * RETURNS       : None
+         */
         private void edgeCaseBtn_Click(object sender, RoutedEventArgs e)
         {
             //send the empty message
@@ -129,6 +166,13 @@ namespace NetworkingA3Client
             }
         }
 
+        /*
+         * METHOD        : errorBtn_Click()
+         * DESCRIPTION   : Handles the click event for the error button. Intentionally causes an error and sends an error message to the server.
+         * PARAMETERS    : object sender - The object that raised the event.
+         *                 RoutedEventArgs e - Event arguments.
+         * RETURNS       : None
+         */
         private void errorBtn_Click(object sender, RoutedEventArgs e)
         {
             //cause an intentional error
@@ -154,6 +198,13 @@ namespace NetworkingA3Client
             }
         }
 
+        /*
+         * METHOD        : fatalBtn_Click()
+         * DESCRIPTION   : Handles the click event for the fatal button. Intentionally causes a fatal error and sends a fatal message to the server.
+         * PARAMETERS    : object sender - The object that raised the event.
+         *                 RoutedEventArgs e - Event arguments.
+         * RETURNS       : None
+         */
         private void fatalBtn_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -188,6 +239,13 @@ namespace NetworkingA3Client
             }
         }
 
+        /*
+         * METHOD        : rateLimiterBtn_Click()
+         * DESCRIPTION   : Handles the click event for the rate limiter button. Tests the server's rate limiting by sending multiple messages.
+         * PARAMETERS    : object sender - The object that raised the event.
+         *                 RoutedEventArgs e - Event arguments.
+         * RETURNS       : None
+         */
         private void rateLimiterBtn_Click(object sender, RoutedEventArgs e)
         {
             if (client.RunRateLimiterTest(Ip, (int)Client.types.DEB, UniqueId, DeviceName, "Hello, this is a rate limiter test.") == retErr)
@@ -200,6 +258,13 @@ namespace NetworkingA3Client
             }
         }
 
+        /*
+         * METHOD        : sendMsgBtn_Click()
+         * DESCRIPTION   : Handles the click event for the send message button. Sends the entered message to the server.
+         * PARAMETERS    : object sender - The object that raised the event.
+         *                 RoutedEventArgs e - Event arguments.
+         * RETURNS       : None
+         */
         private void sendMsgBtn_Click(object sender, RoutedEventArgs e)
         {
             string message = msgInput.Text;
@@ -214,6 +279,13 @@ namespace NetworkingA3Client
             }
         }
 
+        /*
+         * METHOD        : backBtn_Click()
+         * DESCRIPTION   : Handles the click event for the back button. Resets the UI to the main test page.
+         * PARAMETERS    : object sender - The object that raised the event.
+         *                 RoutedEventArgs e - Event arguments.
+         * RETURNS       : None
+         */
         private void backBtn_Click(object sender, RoutedEventArgs e)
         {
             msgInput.Text = string.Empty;
@@ -231,6 +303,13 @@ namespace NetworkingA3Client
             rateLimiterBtn.Visibility = Visibility.Visible;
         }
 
+        /*
+         * METHOD        : Window_Closing()
+         * DESCRIPTION   : Handles the window closing event. Sends a disconnect message to the server if the client was connected.
+         * PARAMETERS    : object sender - The object that raised the event.
+         *                 System.ComponentModel.CancelEventArgs e - Event arguments.
+         * RETURNS       : None
+         */
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (startBtn.Visibility != Visibility.Visible && ipInput.Visibility != Visibility.Visible && ipInputLabel.Visibility != Visibility.Visible)

@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+ * FILE          : Client.cs
+ * PROJECT       : Network Application Development Assignment 3
+ * PROGRAMMER    : Bilal Syed (8927633)
+ * FIRST VERSION : 2025-02-20
+ * DESCRIPTION   : This file contains the Client class, which is responsible for handling communication with the server.
+ *                 It includes methods for sending messages, connecting to the server, and creating messages of different types.
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,6 +30,12 @@ namespace NetworkingA3Client
         public string[] messageTypes = { "CON", "INF", "DEB", "ERR", "FTL" };
         public enum types { CON, INF, DEB, ERR, FTL };
 
+        /*
+         * METHOD        : SendEmptyMsg()
+         * DESCRIPTION   : Sends an empty message to the server at the specified IP address.
+         * PARAMETERS    : string ip - The IP address of the server.
+         * RETURNS       : int - Returns 0 on success, or retErr on failure.
+         */
         public int SendEmptyMsg(string ip)
         {
             try
@@ -52,11 +67,31 @@ namespace NetworkingA3Client
             return 0;
         }
 
+        /*
+         * METHOD        : RunClient()
+         * DESCRIPTION   : Connects to the server and sends a message based on the specified type.
+         * PARAMETERS    : string ip - The IP address of the server.
+         *                 int type - The type of message to send (CON, INF, DEB, ERR, FTL).
+         *                 string id - The process ID of the client.
+         *                 string name - The name of the device.
+         *                 string mesContents - The contents of the message.
+         * RETURNS       : int - Returns 0 on success, or retErr on failure.
+         */
         public int RunClient(string ip, int type, string id, string name, string mesContents)
         {
             return ConnectToLogger(ip, type, id, name, mesContents, serverPort); 
         }
 
+        /*
+         * METHOD        : RunRateLimiterTest()
+         * DESCRIPTION   : Continuously sends messages to the server to test the rate limiter.
+         * PARAMETERS    : string ip - The IP address of the server.
+         *                 int type - The type of message to send (CON, INF, DEB, ERR, FTL).
+         *                 string id - The process ID of the client.
+         *                 string name - The name of the device.
+         *                 string mesContents - The contents of the message.
+         * RETURNS       : int - Returns retErr if the connection fails.
+         */
         public int RunRateLimiterTest(string ip, int type, string id, string name, string mesContents) 
         {
             while (true)
@@ -68,6 +103,17 @@ namespace NetworkingA3Client
             }
         }
 
+        /*
+         * METHOD        : ConnectToLogger()
+         * DESCRIPTION   : Establishes a connection to the server and sends a message.
+         * PARAMETERS    : string ip - The IP address of the server.
+         *                 int type - The type of message to send (CON, INF, DEB, ERR, FTL).
+         *                 string id - The process ID of the client.
+         *                 string name - The name of the device.
+         *                 string mesContents - The contents of the message.
+         *                 int port - The port number to connect to.
+         * RETURNS       : int - Returns 0 on success, or retErr on failure.
+         */
         private int ConnectToLogger(string ip, int type, string id, string name, string mesContents, int port)
         {
             try
@@ -95,6 +141,16 @@ namespace NetworkingA3Client
             return 0;
         }
 
+        /*
+         * METHOD        : CreateMessage()
+         * DESCRIPTION   : Creates a message based on the specified type and content. Serializes the message into JSON and then
+         *                 stores it in a byte array to be sent over the stream.
+         * PARAMETERS    : int type - The type of message to create (CON, INF, DEB, ERR, FTL).
+         *                 string id - The process ID of the client.
+         *                 string name - The name of the device.
+         *                 string mesContents - The contents of the message.
+         * RETURNS       : byte[] - The serialized message as a byte array.
+         */
         private byte[] CreateMessage(int type, string id, string name, string mesContents) 
         {
             string contents = string.Empty;
