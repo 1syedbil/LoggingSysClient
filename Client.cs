@@ -34,9 +34,10 @@ namespace NetworkingA3Client
          * METHOD        : SendEmptyMsg()
          * DESCRIPTION   : Sends an empty message to the server at the specified IP address.
          * PARAMETERS    : string ip - The IP address of the server.
+         *                 string id - The process ID of the client.
          * RETURNS       : int - Returns 0 on success, or retErr on failure.
          */
-        public int SendEmptyMsg(string ip)
+        public int SendEmptyMsg(string ip, string id)
         {
             try
             {
@@ -44,7 +45,7 @@ namespace NetworkingA3Client
 
                 NetworkStream stream = client.GetStream();
 
-                object msgObj = new { ID = "", DeviceName = "", PID = "", Contents = "" };
+                object msgObj = new { ID = "", DeviceName = "", PID = id, Contents = "" }; 
 
                 string contents = JsonSerializer.Serialize(msgObj);
 

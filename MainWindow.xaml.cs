@@ -36,7 +36,7 @@ namespace NetworkingA3Client
         private string ip;
         private int retErr = int.Parse(ConfigurationManager.AppSettings["retErr"]);
         private string uniqueId;
-        private string deviceName; 
+        private string deviceName;
 
         public string Ip 
         {
@@ -71,7 +71,7 @@ namespace NetworkingA3Client
 
             startBtn.Visibility = Visibility.Visible;
             ipInput.Visibility = Visibility.Visible;
-            ipInputLabel.Visibility = Visibility.Visible; 
+            ipInputLabel.Visibility = Visibility.Visible;
         }
 
         /*
@@ -139,7 +139,7 @@ namespace NetworkingA3Client
         private void edgeCaseBtn_Click(object sender, RoutedEventArgs e)
         {
             //send the empty message
-            if (client.SendEmptyMsg(Ip) == retErr) 
+            if (client.SendEmptyMsg(Ip, UniqueId) == retErr) 
             {
                 MessageBoxResult result = MessageBox.Show("Could not connect to server. The client will close upon exit from this window.", "Connection Error");
                 if (result == MessageBoxResult.OK || result == MessageBoxResult.None)
@@ -246,12 +246,14 @@ namespace NetworkingA3Client
          *                 RoutedEventArgs e - Event arguments.
          * RETURNS       : None
          */
-        private void rateLimiterBtn_Click(object sender, RoutedEventArgs e)
+        private async void rateLimiterBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (client.RunRateLimiterTest(Ip, (int)Client.types.DEB, UniqueId, DeviceName, "Hello, this is a rate limiter test.") == retErr)
+            int result = await Task.Run(() => client.RunRateLimiterTest(Ip, (int)Client.types.DEB, UniqueId, DeviceName, "Hello, this is a rate limiter test."));
+
+            if (result == retErr)
             {
-                MessageBoxResult result = MessageBox.Show("Could not connect to server. The client will close upon exit from this window.", "Connection Error");
-                if (result == MessageBoxResult.OK || result == MessageBoxResult.None)
+                MessageBoxResult choice = MessageBox.Show("Could not connect to server. The client will close upon exit from this window.", "Connection Error");
+                if (choice == MessageBoxResult.OK || choice == MessageBoxResult.None)
                 {
                     Close();
                 }
